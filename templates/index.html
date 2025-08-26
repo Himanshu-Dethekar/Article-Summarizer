@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article Summarizer</title>
+<style>
+    /* Reset */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Segoe UI", sans-serif;}
+    body { min-height:100vh; display:flex; justify-content:center; align-items:center;
+           background: linear-gradient(135deg, #74ebd5, #9face6); transition: background 0.5s ease;}
+    body.dark { background: linear-gradient(135deg, #1f1c2c, #928dab); }
+
+    .container {
+        width:85%; max-width:1000px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(14px);
+        border-radius:20px;
+        box-shadow:0 8px 32px rgba(0,0,0,0.2);
+        padding:20px; display:flex; flex-direction:column; gap:20px;
+        transition: background 0.5s ease;
+    }
+    body.dark .container { background: rgba(0,0,0,0.35); }
+
+    .header { display:flex; justify-content:space-between; align-items:center; }
+    .header h1 { font-size:35px; color:#fff; }
+    .toggle { width:55px; height:28px; border-radius:30px; background:#fff; position:relative; cursor:pointer; transition: background 0.3s; }
+    .circle { width:22px; height:22px; border-radius:50%; background:#74ebd5; position:absolute; top:3px; left:3px; transition: all 0.3s ease; }
+    body.dark .toggle { background:#333; }
+    body.dark .circle { transform: translateX(27px); background:#f5a623; }
+
+    .chat { display:flex; gap:20px; justify-content:space-between; }
+    .chat-column { flex:1; display:flex; flex-direction:column; gap:15px; }
+    .bubble { padding:14px 18px; border-radius:16px; background:rgba(255,255,255,0.35); backdrop-filter:blur(6px);
+              box-shadow:0 4px 12px rgba(0,0,0,0.15); color:#222; animation:fadeIn 0.4s ease; }
+    body.dark .bubble { background: rgba(0,0,0,0.4); color:#fff; }
+    .bubble.user { align-self:flex-end; }
+    .bubble.ai { align-self:flex-start; }
+    .bubble.error { border-left:5px solid red; background: rgba(255,0,0,0.08); color:#a94442; }
+
+    .input-area { display:flex; gap:10px; }
+    textarea { flex:1; padding:12px; border-radius:12px; border:none; outline:none; resize:none;
+               background: rgba(255,255,255,0.3); backdrop-filter: blur(6px); font-size:14px; color:#333; transition: background 0.3s ease; }
+    body.dark textarea { background: rgba(0,0,0,0.4); color:#fff; }
+    button { padding:12px 20px; border-radius:12px; border:none; font-weight:bold; cursor:pointer;
+             color:#fff; background: linear-gradient(135deg, #74ebd5, #9face6); transition: transform 0.2s ease; }
+    button:hover { transform: scale(1.05); }
+    body.dark button { background: linear-gradient(135deg, #f5a623, #f76b1c); }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Article Summarizer</h1>
+        <div class="toggle" onclick="toggleDark()"><div class="circle"></div></div>
+    </div>
+
+    <div class="chat">
+        <div class="chat-column" id="user-column">
+            {% if text %}
+            <div class="bubble user">{{ text }}</div>
+            {% endif %}
+
+            {% if error %}
+            <div class="bubble error">{{ error }}</div>
+            {% endif %}
+
+            {% if summary %}
+            <div class="bubble ai">✨ Summary: {{ summary }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <form class="input-area" method="POST" action="/">
+        <textarea name="text" id="inputText" placeholder="Paste your article here...">{{ text }}</textarea>
+        <button type="submit">Summarize</button>
+    </form>
+</div>
+
+<script>
+function toggleDark() {
+    document.body.classList.toggle("dark");
+}
+</script>
+</body>
+</html>
