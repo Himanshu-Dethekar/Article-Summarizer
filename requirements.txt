@@ -1,0 +1,5 @@
+Flask==2.3.6
+transformers==4.41.0
+torch==2.1.0
+regex==2025.8.21
+sentencepiece==0.1.99
